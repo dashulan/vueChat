@@ -32,7 +32,7 @@ const state = {
     }
   },
   profile: {
-    userId: "1",
+    userId: "2",
     userName: "大树懒",
     avatar: "img/city.jpg"
   },

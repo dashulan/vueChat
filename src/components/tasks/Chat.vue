@@ -4,8 +4,7 @@
     </message>
   </q-virtual-scroll> -->
   <q-list ref="MessageList" class="scroll overflow-hidden">
-    <message v-for="(item, key) in tasks" :key="key" :id="key" :item="item">
-    </message>
+    <message v-for="item in messageList" :key="item.id" :item="item" />
   </q-list>
 </template>
 
@@ -17,7 +16,9 @@ export default {
   data() {
     return {};
   },
-  props: {},
+  props: {
+    messageList: Array
+  },
   methods: {
     cacluteTime(sentTime) {
       let current = Date.now();
@@ -29,9 +30,8 @@ export default {
   components: {
     message: require("./Message").default
   },
-  computed: {
-    ...mapGetters("tasks", ["tasks"])
-  }
+  computed: {},
+  updated() {}
 };
 </script>
 <style lang="sass"></style>

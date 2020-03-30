@@ -17,7 +17,7 @@
         >
           <q-tab-panel name="chats" class="q-pa-none">
             <q-list>
-              <div v-for="(item, index) in conversations" :key="index">
+              <div v-for="item in conversations" :key="item.id">
                 <q-item
                   clickable
                   @click="handleItemClick(item)"

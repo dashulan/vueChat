@@ -7,7 +7,7 @@
         </q-header>
 
         <q-page-container class="bg-grey-11">
-          <chat-window />
+          <chat-window :messageList="messageList" />
         </q-page-container>
 
         <q-footer>
@@ -24,12 +24,15 @@ import ChatWindow from "../components/tasks/Chat";
 import ChatHeader from "../components/tasks/ChatHeader";
 import { date } from "quasar";
 import { mapGetters } from "vuex";
+import axios from "axios";
 
 export default {
   name: "WhatsappLayout",
   data() {
     return {
-      user: "大树懒"
+      user: "大树懒",
+      anotherid: "",
+      messageList: []
     };
   },
   components: {
@@ -47,8 +50,8 @@ export default {
     //   return this.$store.getters["tasks/tasks"];
     // }
     // 等同于 简写方式
-    ...mapGetters("tasks", ["tasks"]),
-    ...mapGetters("tasks", ["currentConversation"])
+    ...mapGetters("tasks", ["currentConversation"]),
+    ...mapGetters("tasks", ["profile"])
   },
   methods: {
     inputkeyDownHandle(even) {
@@ -57,10 +60,20 @@ export default {
         this.sendMessage();
       }
     },
-    sendMessage() {}
+    sendMessage() {},
+    getConversation() {
+      let c_id = this.currentConversation.conversationId;
+      axios.get("/statics/conversation.json").then(this.getConversationSucc);
+    },
+    getConversationSucc(res) {
+      res = res.data;
+      console.log(res.data);
+      this.messageList = res.data.messages;
+    }
   },
   mounted() {
-    console.log(this.currentConversation);
+    this.getConversation();
+    // console.log(this.currentConversation);
   }
 };
 </script>

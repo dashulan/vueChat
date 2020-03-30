@@ -1,14 +1,10 @@
 <template>
   <div class="container">
-    <q-item
-      @click="updateTask({ id: id, updates: { sent: !item.sent } })"
-      v-touch-hold:1000.mouse="fireSomething"
-    >
+    <q-item v-touch-hold:1000.mouse="fireSomething">
       <q-item-section>
         <q-chat-message
-          :avatar="item.avatar"
           :text="item.text"
-          :sent="item.userName === profile.userName"
+          :sent="show"
           :stamp="stamp + ' age'"
         />
       </q-item-section>
@@ -23,11 +19,9 @@ import { date } from "quasar";
 import { scroll } from "quasar";
 const { getScrollHeight } = scroll;
 export default {
-  props: ["item", "id"],
+  props: ["item"],
   data() {
-    return {
-      show: false
-    };
+    return {};
   },
   methods: {
     ...mapActions("tasks", ["updateTask"]),
@@ -39,16 +33,11 @@ export default {
     stamp() {
       let stamp;
       let current = Date.now();
-      console.log(date.formatDate(current, "YYYY-MM-DD HH:mm:ss"));
       let cs = date.formatDate(current, "X");
-      let sent = date.extractDate(
-        this.item.sentTimeStamp,
-        "YYYY-MM-DD HH:mm:ss"
-      );
+
+      let sent = date.extractDate(this.item.sent, "YYYY-MM-DD HH:mm:ss");
       let sent2 = date.formatDate(sent, "X");
-      console.log(cs);
-      console.log(sent2);
-      console.log("=======");
+
       let min = Math.round((cs - sent2) / 60);
       stamp = min + " min";
       if (min > 60) {
@@ -61,7 +50,10 @@ export default {
       }
       return stamp;
     },
-    ...mapGetters("tasks", ["profile"])
+    ...mapGetters("tasks", ["profile"]),
+    show() {
+      return this.item.userId === this.profile.userId;
+    }
   }
 };
 </script>
