@@ -1,6 +1,6 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
-
+const path = require("path");
 module.exports = function(ctx) {
   return {
     // app boot file (/src/boot)
@@ -80,7 +80,11 @@ module.exports = function(ctx) {
     devServer: {
       https: false,
       port: 8080,
-      open: true // opens browser window automatically
+      open: true, // opens browser window automatically
+      proxy: {
+        "/api": "http://localhost:8080",
+        pathRewrite: { "^/api": "" }
+      }
     },
 
     // animations: 'all', // --- includes all animations

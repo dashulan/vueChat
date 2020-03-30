@@ -5,6 +5,7 @@ const routes = [
     children: [{ path: "", component: () => import("pages/Index.vue") }]
   },
   {
+    name: "chat",
     path: "/chat",
     component: () => import("pages/WatsApp.vue")
   },

@@ -3,7 +3,7 @@
     <div class="WAL position-relative bg-grey-11" :style="style">
       <q-layout view="lHh Lpr lFf" class="WAL__layout shadow-3" container>
         <q-header>
-          <chat-header :user="'猪猪'" />
+          <chat-header :user="currentConversation.title" />
         </q-header>
 
         <q-page-container class="bg-grey-11">
@@ -27,7 +27,6 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "WhatsappLayout",
-  props: ["conversations"],
   data() {
     return {
       user: "大树懒"
@@ -39,9 +38,6 @@ export default {
     ChatHeader
   },
   computed: {
-    currentConversation() {
-      return this.conversations[this.currentConversationIndex];
-    },
     style() {
       return {
         height: this.$q.screen.height + "px"
@@ -51,7 +47,8 @@ export default {
     //   return this.$store.getters["tasks/tasks"];
     // }
     // 等同于 简写方式
-    ...mapGetters("tasks", ["tasks"])
+    ...mapGetters("tasks", ["tasks"]),
+    ...mapGetters("tasks", ["currentConversation"])
   },
   methods: {
     inputkeyDownHandle(even) {
@@ -61,6 +58,9 @@ export default {
       }
     },
     sendMessage() {}
+  },
+  mounted() {
+    console.log(this.currentConversation);
   }
 };
 </script>

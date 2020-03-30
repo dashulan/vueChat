@@ -18,7 +18,11 @@
           <q-tab-panel name="chats" class="q-pa-none">
             <q-list>
               <div v-for="(item, index) in conversations" :key="index">
-                <q-item to="/chat" class="q-px-sm">
+                <q-item
+                  clickable
+                  @click="handleItemClick(item)"
+                  class="q-px-sm"
+                >
                   <q-item-section top avatar class="q-px-sm">
                     <q-avatar rounded size="48px">
                       <img :src="item.avatar" />
@@ -95,92 +99,19 @@
 </template>
 
 <script>
+import axios from "axios";
+import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 export default {
   name: "",
   data() {
     return {
       panel: "chats",
-      conversations: [
-        {
-          avatar: "../statics/city.jpg",
-          name: "呼呼",
-          caption: "今天真开心",
-          lastTime: "晚上7:30"
-        },
-        {
-          avatar: "../statics/city.jpg",
-          name: "呼呼",
-          caption: "今天真开心",
-          lastTime: "晚上7:30"
-        },
-        {
-          avatar: "../statics/city.jpg",
-          name: "呼呼",
-          caption: "今天真开心",
-          lastTime: "晚上7:30"
-        },
-        {
-          avatar: "../statics/city.jpg",
-          name: "呼呼",
-          caption: "今天真开心",
-          lastTime: "晚上7:30"
-        },
-        {
-          avatar: "../statics/city.jpg",
-          name: "呼呼",
-          caption: "今天真开心",
-          lastTime: "晚上7:30"
-        },
-        {
-          avatar: "../statics/city.jpg",
-          name: "呼呼",
-          caption: "今天真开心",
-          lastTime: "晚上7:30"
-        },
-        {
-          avatar: "../statics/city.jpg",
-          name: "呼呼",
-          caption: "今天真开心",
-          lastTime: "晚上7:30"
-        },
-        {
-          avatar: "../statics/city.jpg",
-          name: "呼呼",
-          caption: "今天真开心",
-          lastTime: "晚上7:30"
-        },
-        {
-          avatar: "../statics/city.jpg",
-          name: "呼呼",
-          caption: "今天真开心",
-          lastTime: "晚上7:30"
-        },
-        {
-          avatar: "../statics/city.jpg",
-          name: "呼呼",
-          caption: "今天真开心",
-          lastTime: "晚上7:30"
-        },
-        {
-          avatar: "../statics/city.jpg",
-          name: "呼呼",
-          caption: "今天真开心",
-          lastTime: "晚上7:30"
-        },
-        {
-          avatar: "../statics/city.jpg",
-          name: "呼呼",
-          caption: "今天真开心",
-          lastTime: "晚上7:30"
-        },
-        {
-          avatar: "../statics/city.jpg",
-          name: "呼呼",
-          caption: "今天真开心",
-          lastTime: "晚上7:30"
-        }
-      ]
+      conversations: []
     };
+  },
+  computed: {
+    ...mapGetters("tasks", ["profile"])
   },
   methods: {
     myTweak(offset) {
@@ -191,9 +122,36 @@ export default {
       // this is actually what the default style-fn does in Quasar
       console.log(offset);
       return { minHeight: offset ? `calc(100vh - ${offset}px)` : "100vh" };
-    }
+    },
+    getAllConversations() {
+      axios
+        .get("/statics/conversations.json")
+        .then(this.getAllConversationsSucc)
+        .catch(err => console.log("失败"));
+      console.log("axois");
+    },
+    getAllConversationsSucc(res) {
+      res = res.data;
+      console.log("sss");
+      if (res.ret && res.data) {
+        const data = res.data;
+        this.conversations = data.conversations;
+      }
+    },
+    handleItemClick(item) {
+      this.setCurrentConverstation({
+        id: item.id,
+        title: item.name
+      });
+      this.$router.push({ path: "/chat" });
+      console.log("assss");
+    },
+    ...mapActions("tasks", ["setCurrentConverstation"])
   },
-  components: {}
+  components: {},
+  mounted() {
+    this.getAllConversations();
+  }
 };
 </script>
 <style lang="sass">

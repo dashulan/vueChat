@@ -26,14 +26,19 @@ const state = {
       userName: "猪猪",
       text: ["哈哈哈哈"],
       sent: true,
-      sentTimeStamp: "2020-03-26 23:54:58",
+      sentTimeStamp: "2020-03-30 15:35:38",
       sentDate: "",
       sentTime: ""
     }
   },
   profile: {
+    userId: "1",
     userName: "大树懒",
     avatar: "img/city.jpg"
+  },
+  currentConversation: {
+    title: "",
+    conversationId: ""
   }
 };
 
@@ -43,6 +48,11 @@ const mutations = {
   },
   addMessage(state, payload) {
     Vue.set(state.tasks, payload.id, payload.message);
+  },
+  setCurrentConverstation(state, payload) {
+    // console.log(payload);
+    // console.log(state.currentConversation);
+    Object.assign(state.currentConversation, payload);
   }
 };
 
@@ -57,6 +67,13 @@ const actions = {
       message: message
     };
     commit("addMessage", payload);
+  },
+  setCurrentConverstation({ commit }, conversation) {
+    let payload = {
+      title: conversation.title,
+      conversationId: conversation.id
+    };
+    commit("setCurrentConverstation", payload);
   }
 };
 
@@ -66,6 +83,9 @@ const getters = {
   },
   profile: state => {
     return state.profile;
+  },
+  currentConversation: state => {
+    return state.currentConversation;
   }
 };
 

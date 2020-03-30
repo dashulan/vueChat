@@ -9,6 +9,7 @@
           :avatar="item.avatar"
           :text="item.text"
           :sent="item.userName === profile.userName"
+          :stamp="stamp + ' age'"
         />
       </q-item-section>
     </q-item>
@@ -36,12 +37,29 @@ export default {
   },
   computed: {
     stamp() {
+      let stamp;
       let current = Date.now();
-      let cs = date.formatDate(current, "ss");
+      console.log(date.formatDate(current, "YYYY-MM-DD HH:mm:ss"));
+      let cs = date.formatDate(current, "X");
+      let sent = date.extractDate(
+        this.item.sentTimeStamp,
+        "YYYY-MM-DD HH:mm:ss"
+      );
+      let sent2 = date.formatDate(sent, "X");
       console.log(cs);
-      let sent = date.extractDate(this.item.sentTimeStamp, "ss");
-      console.log(sent);
-      return cs - sent;
+      console.log(sent2);
+      console.log("=======");
+      let min = Math.round((cs - sent2) / 60);
+      stamp = min + " min";
+      if (min > 60) {
+        let hour = Math.round(min / 60);
+        stamp = hour + " hour";
+        if (hour > 24) {
+          let day = Math.round(hour / 24);
+          stamp = day + " day";
+        }
+      }
+      return stamp;
     },
     ...mapGetters("tasks", ["profile"])
   }
