@@ -125,18 +125,20 @@ export default {
     },
     getAllConversations() {
       axios
-        .get("/statics/conversations.json")
+        .get("http://localhost:8083/conversation/id")
+        // .get("/statics/conversations.json")
         .then(this.getAllConversationsSucc)
         .catch(err => console.log("失败"));
       console.log("axois");
     },
     getAllConversationsSucc(res) {
-      res = res.data;
-      console.log("sss");
-      if (res.ret && res.data) {
-        const data = res.data;
-        this.conversations = data.conversations;
-      }
+      // res = res.data;
+      // console.log("sss");
+      // if (res.ret && res.data) {
+      //   const data = res.data;
+      //   this.conversations = data.conversations;
+      // }
+      console.log(res);
     },
     handleItemClick(item) {
       this.setCurrentConverstation({

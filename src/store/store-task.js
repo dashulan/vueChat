@@ -53,6 +53,9 @@ const mutations = {
     // console.log(payload);
     // console.log(state.currentConversation);
     Object.assign(state.currentConversation, payload);
+  },
+  updateProfile(state, payload) {
+    Object.assign(state.profile, payload);
   }
 };
 
@@ -74,6 +77,15 @@ const actions = {
       conversationId: conversation.id
     };
     commit("setCurrentConverstation", payload);
+  },
+  updateProfile({ commit }, profile) {
+    console.log("update profile");
+    let payload = {
+      userId: profile.userId,
+      userName: profile.userName,
+      avatar: profile.avatar
+    };
+    commit("updateProfile", payload);
   }
 };
 

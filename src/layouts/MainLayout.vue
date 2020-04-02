@@ -95,6 +95,10 @@ export default {
           caption: "@QuasarFramework",
           icon: "public",
           link: "http://192.168.1.108:8080/#/chat"
+        },
+        {
+          title: "login",
+          link: "http://192.168.1.108:8080/#/login"
         }
       ]
     };

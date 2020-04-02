@@ -28,8 +28,12 @@ import { mapActions } from "vuex";
 import { date } from "quasar";
 import { mapGetters } from "vuex";
 import { scroll } from "quasar";
+
 export default {
   name: "MessageInput",
+  props: {
+    stompClient: Object
+  },
   data() {
     return {
       message: ""
@@ -41,31 +45,41 @@ export default {
   methods: {
     ...mapActions("tasks", ["addMessage"]),
     sendMessage() {
-      let m = {
-        text: [],
-        sent: false,
-        sentDate: "",
-        sentTimeStamp: "",
-        sentTime: ""
-      };
+      // let m = {
+      //   text: [],
+      //   sent: false,
+      //   sentDate: "",
+      //   sentTimeStamp: "",
+      //   sentTime: ""
+      // };
 
-      let timeStamp = Date.now();
-      let sentTimeStamp = date.formatDate(timeStamp, "YYYY-MM-DD HH:mm:ss");
-      let sentDate = date.formatDate(timeStamp, "YYYY-MM-DD");
-      let sentTime = date.formatDate(timeStamp, "HH:mm:ss");
-      m.sentDate = sentDate;
-      m.sentTime = sentTime;
-      m.sentTimeStamp = sentTimeStamp;
-      m.userName = this.profile.userName;
-      m.avatar = this.profile.avatar;
-      m.text.push(this.message);
-      this.addMessage(m);
-      this.message = "";
+      // let timeStamp = Date.now();
+      // let sentTimeStamp = date.formatDate(timeStamp, "YYYY-MM-DD HH:mm:ss");
+      // let sentDate = date.formatDate(timeStamp, "YYYY-MM-DD");
+      // let sentTime = date.formatDate(timeStamp, "HH:mm:ss");
+      // m.sentDate = sentDate;
+      // m.sentTime = sentTime;
+      // m.sentTimeStamp = sentTimeStamp;
+      // m.userName = this.profile.userName;
+      // m.avatar = this.profile.avatar;
+      // m.text.push(this.message);
+      // this.addMessage(m);
+      // this.message = "";
+
+      // this.socket.send("/app/hello", {}, this.message);
+
+      // console.log("sss");
+      this.send();
     },
     handleKey(e) {
       if (e.key === "Enter") {
         this.sendMessage();
       }
+    },
+    send() {
+      console.log("Send message:" + this.message);
+      const msg = { name: this.message };
+      this.stompClient.send("/app/hello", JSON.stringify(msg), {});
     }
   },
   components: {}
