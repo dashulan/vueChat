@@ -114,7 +114,10 @@ export default {
           this.stompClient.subscribe(
             "/queue/chat/" + this.profile.userName,
             tick => {
-              this.messageList.push(JSON.parse(tick.body).content);
+              console.log(tick);
+              let msg = JSON.parse(tick.body);
+              this.messageList.push(msg);
+              console.log(this.messageList);
             }
           );
         },
@@ -128,7 +131,14 @@ export default {
       console.log(this.profile.userName);
       console.log("Send message:" + this.message);
       if (this.stompClient && this.stompClient.connected) {
-        const msg = { name: this.message };
+        let current = Date.now();
+        let sent = date.formatDate(current, "YYYY-MM-DD HH:mm:ss");
+        const msg = {
+          text: [this.message],
+          userId: this.profile.userId,
+          sent: sent,
+          conversationId: "1"
+        };
         this.stompClient.send(
           "/app/chat/" + this.anotherName,
           JSON.stringify(msg),

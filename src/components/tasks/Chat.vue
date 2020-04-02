@@ -4,7 +4,7 @@
     </message>
   </q-virtual-scroll> -->
   <q-list ref="MessageList" class="scroll overflow-hidden">
-    <message v-for="item in messageList" :key="item.id" :item="item" />
+    <message v-for="(item, index) in messageList" :key="index" :item="item" />
   </q-list>
 </template>
 
