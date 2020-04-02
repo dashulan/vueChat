@@ -4,27 +4,27 @@
     "messages": [
       {
         "text": ["hahahaa哈哈哈"],
-        "userId": "1",
+        "userId": 1,
         "sent": "2020-03-30 20:13:22",
-        "conversationId": "1"
+        "conversationId": 1
       },
       {
         "text": ["hahahaa哈哈哈"],
-        "userId": "1",
+        "userId": 1,
         "sent": "2020-03-30 20:13:22",
-        "conversationId": "1"
+        "conversationId": 1
       },
       {
         "text": ["hahahaa哈哈哈"],
-        "userId": "1",
+        "userId": 1,
         "sent": "2020-03-30 20:13:22",
-        "conversationId": "1"
+        "conversationId": 1
       },
       {
         "text": ["hahahaa哈哈哈"],
-        "userId": "2",
+        "userId": 2,
         "sent": "2020-03-30 20:13:22",
-        "conversationId": "1"
+        "conversationId": 1
       }
     ]
   }

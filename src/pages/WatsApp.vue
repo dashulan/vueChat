@@ -35,6 +35,7 @@
               class="col-grow"
               autogrow
               v-model="message"
+              @keyup.prevent="handleKey"
             />
             <q-btn round flat icon="send" @click="send" />
           </q-toolbar>
@@ -118,6 +119,7 @@ export default {
               let msg = JSON.parse(tick.body);
               this.messageList.push(msg);
               console.log(this.messageList);
+              console.log(this.profile.userId);
             }
           );
         },
@@ -130,7 +132,11 @@ export default {
     send() {
       console.log(this.profile.userName);
       console.log("Send message:" + this.message);
-      if (this.stompClient && this.stompClient.connected) {
+      if (
+        this.stompClient &&
+        this.stompClient.connected &&
+        this.message !== ""
+      ) {
         let current = Date.now();
         let sent = date.formatDate(current, "YYYY-MM-DD HH:mm:ss");
         const msg = {
@@ -140,11 +146,15 @@ export default {
           conversationId: "1"
         };
         this.stompClient.send(
-          "/app/chat/" + this.anotherName,
+          "/app/chat/" + this.profile.userName + "/" + this.anotherName,
           JSON.stringify(msg),
           {}
         );
+        this.message = "";
       }
+    },
+    handleKey: function(e) {
+      if (e.key == "Enter") this.send();
     }
   },
   mounted() {

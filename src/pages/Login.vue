@@ -1,6 +1,7 @@
 <template>
   <div>
     <input type="text" v-model="userName" />
+    <input type="text" v-model="userId" />
     <button @click="login">submit</button>
   </div>
 </template>
@@ -11,7 +12,8 @@ export default {
   name: "",
   data() {
     return {
-      userName: ""
+      userName: "",
+      userId: 0
     };
   },
   components: {},
@@ -19,7 +21,7 @@ export default {
     login: function() {
       console.log("login");
       this.updateProfile({
-        userId: "5",
+        userId: this.userId,
         userName: this.userName,
         avatar: ""
       });

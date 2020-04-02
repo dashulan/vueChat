@@ -2,11 +2,7 @@
   <div class="container">
     <q-item v-touch-hold:1000.mouse="fireSomething">
       <q-item-section>
-        <q-chat-message
-          :text="item.text"
-          :sent="show"
-          :stamp="stamp + ' age'"
-        />
+        <q-chat-message :text="item.text" :sent="show" :stamp="stamp" />
       </q-item-section>
     </q-item>
   </div>
@@ -31,7 +27,7 @@ export default {
   },
   computed: {
     stamp() {
-      let stamp;
+      let stamp = "";
       let current = Date.now();
       let cs = date.formatDate(current, "X");
 
@@ -39,7 +35,6 @@ export default {
       let sent2 = date.formatDate(sent, "X");
 
       let min = Math.round((cs - sent2) / 60);
-      stamp = min + " min";
       if (min > 60) {
         let hour = Math.round(min / 60);
         stamp = hour + " hour";
@@ -47,12 +42,14 @@ export default {
           let day = Math.round(hour / 24);
           stamp = day + " day";
         }
+        return stamp + " ago";
+      } else {
+        return stamp;
       }
-      return stamp;
     },
     ...mapGetters("tasks", ["profile"]),
     show() {
-      return this.item.userId === this.profile.userId;
+      return this.item.userId == this.profile.userId;
     }
   }
 };
