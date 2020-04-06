@@ -82,8 +82,14 @@ module.exports = function(ctx) {
       port: 8080,
       open: true, // opens browser window automatically
       proxy: {
-        "/api": "http://localhost:8080",
-        pathRewrite: { "^/api": "" }
+        // proxy all requests starting with /api to jsonplaceholder
+        "/api": {
+          target: "http://localhost:8083",
+          changeOrigin: true,
+          pathRewrite: {
+            "^/api": ""
+          }
+        }
       }
     },
 
