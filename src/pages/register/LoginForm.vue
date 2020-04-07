@@ -1,23 +1,8 @@
 <template>
   <q-card style="width: 300px;" class="bg-white text-dark">
-    <q-card-section>
-      <q-item class="q-pa-none">
-        <q-item-section>
-          <div class="text-h6 text-weight-bold">{{ status }}</div>
-        </q-item-section>
-        <q-space />
-        <q-item-section class="col-2">
-          <q-btn
-            icon="close"
-            color="blue-grey-2"
-            flat
-            round
-            @click="closeDialog"
-          />
-        </q-item-section>
-      </q-item>
-    </q-card-section>
-    <q-card-section>
+    <Head :status="status" @close="closeDialog" />
+
+    <q-card-section class="q-pa-sm">
       <q-form class="q-gutter-sm">
         <q-input
           outlined
@@ -25,8 +10,8 @@
           placeholder="请输入用户名"
           dense
           maxlength="12"
-          error-message="用户名重复"
-          :error="!isValid"
+          error-message="用户不存在"
+          :error="userError"
           class="q-mt-none"
         />
         <q-input
@@ -34,21 +19,38 @@
           v-model="user.password"
           placeholder="请输入密码"
           dense
-          type="password"
+          :type="isPwd ? 'password' : 'text'"
           maxlength="18"
-          error-message="用户名重复"
-          :error="!isValid"
-        />
-        <div>
-          <q-btn color="primary" label="登录" class="full-width" />
+          error-message="密码错误"
+          :error="pwdError"
+          class="q-mt-none"
+        >
+          <template v-slot:append>
+            <q-icon
+              :name="isPwd ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwd = !isPwd"
+            />
+          </template>
+        </q-input>
+
+        <div class="q-mt-none">
+          <q-btn
+            color="primary"
+            @click="doLogin"
+            label="登录"
+            class="full-width"
+          />
         </div>
       </q-form>
     </q-card-section>
     <q-card-section class="q-py-none row">
       <span>
-        没有账号
+        没有账号？
       </span>
-      <span class="text-primary cursor-pointer" @click="handleFormChange"
+      <span
+        class="text-primary cursor-pointer q-ml-sm"
+        @click="handleFormChange"
         >注册</span
       >
       <q-space />
@@ -63,6 +65,9 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+import axios from "axios";
+import Head from "../authCompoents/CardHeadSection";
 export default {
   name: "Login",
   data() {
@@ -73,6 +78,9 @@ export default {
       },
       isValid: true,
       status: "登录",
+      pwdError: false,
+      userError: false,
+      isPwd: true,
     };
   },
   methods: {
@@ -89,8 +97,25 @@ export default {
     handleFormChange: function () {
       this.$emit("change", "Register");
     },
+    doLogin: function () {
+      axios.post("/api/auth/login", this.user).then((res) => {
+        if (res.data === "登录成功") {
+          this.updateProfile({
+            userName: this.user.name,
+          });
+          this.$router.push("home");
+        } else if (res.data === "密码错误") {
+          this.pwdError = true;
+        } else if (res.data === "用户不存在") {
+          this.userError = true;
+        }
+      });
+    },
+    ...mapActions("tasks", ["updateProfile"]),
   },
-  components: {},
+  components: {
+    Head,
+  },
 };
 </script>
 

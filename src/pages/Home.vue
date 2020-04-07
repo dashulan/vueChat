@@ -2,7 +2,7 @@
   <q-layout view="lHh lpr lFf">
     <q-header class="bg-grey-2 text-black" elevated>
       <q-toolbar>
-        <span class="q-subtitle-1 text-black">哈哈啊哈啊哈</span>
+        <span class="q-subtitle-1 text-black">{{ profile.userName }}</span>
         <q-space />
       </q-toolbar>
     </q-header>
@@ -13,7 +13,7 @@
           animated
           swipeable
           class="bg-white text-blue shadow-2"
-          style="min-height: calc(100vh - 100px)"
+          style="min-height: calc(100vh - 100px);"
         >
           <q-tab-panel name="chats" class="q-pa-none">
             <q-list>
@@ -107,11 +107,11 @@ export default {
   data() {
     return {
       panel: "chats",
-      conversations: []
+      conversations: [],
     };
   },
   computed: {
-    ...mapGetters("tasks", ["profile"])
+    ...mapGetters("tasks", ["profile"]),
   },
   methods: {
     myTweak(offset) {
@@ -128,7 +128,7 @@ export default {
         .get("http://localhost:8083/conversation/id")
         // .get("/statics/conversations.json")
         .then(this.getAllConversationsSucc)
-        .catch(err => console.log("失败"));
+        .catch((err) => console.log("失败"));
       console.log("axois");
     },
     getAllConversationsSucc(res) {
@@ -143,17 +143,16 @@ export default {
     handleItemClick(item) {
       this.setCurrentConverstation({
         id: item.id,
-        title: item.name
+        title: item.name,
       });
       this.$router.push({ path: "/chat" });
-      console.log("assss");
     },
-    ...mapActions("tasks", ["setCurrentConverstation"])
+    ...mapActions("tasks", ["setCurrentConverstation"]),
   },
   components: {},
   mounted() {
     this.getAllConversations();
-  }
+  },
 };
 </script>
 <style lang="sass">

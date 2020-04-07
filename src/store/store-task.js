@@ -10,7 +10,7 @@ const state = {
       sent: true,
       sentTimeStamp: "2020-03-26 23:54:58",
       sentDate: "",
-      sentTime: ""
+      sentTime: "",
     },
     ID2: {
       avatar: "https://cdn.quasar.dev/team/dan_popescu.jpg",
@@ -19,7 +19,7 @@ const state = {
       sent: true,
       sentTimeStamp: "2020-03-26 23:54:58",
       sentDate: "",
-      sentTime: ""
+      sentTime: "",
     },
     ID3: {
       avatar: "../statics/city.jpg",
@@ -28,18 +28,18 @@ const state = {
       sent: true,
       sentTimeStamp: "2020-03-30 15:35:38",
       sentDate: "",
-      sentTime: ""
-    }
+      sentTime: "",
+    },
   },
   profile: {
     userId: 2,
     userName: "大树懒",
-    avatar: "img/city.jpg"
+    avatar: "img/city.jpg",
   },
   currentConversation: {
     title: "",
-    conversationId: ""
-  }
+    conversationId: "",
+  },
 };
 
 const mutations = {
@@ -56,7 +56,7 @@ const mutations = {
   },
   updateProfile(state, payload) {
     Object.assign(state.profile, payload);
-  }
+  },
 };
 
 const actions = {
@@ -67,38 +67,37 @@ const actions = {
     let messagId = uid();
     let payload = {
       id: messagId,
-      message: message
+      message: message,
     };
     commit("addMessage", payload);
   },
   setCurrentConverstation({ commit }, conversation) {
     let payload = {
       title: conversation.title,
-      conversationId: conversation.id
+      conversationId: conversation.id,
     };
     commit("setCurrentConverstation", payload);
   },
   updateProfile({ commit }, profile) {
-    console.log("update profile");
     let payload = {
       userId: profile.userId,
       userName: profile.userName,
-      avatar: profile.avatar
+      avatar: profile.avatar,
     };
     commit("updateProfile", payload);
-  }
+  },
 };
 
 const getters = {
-  tasks: state => {
+  tasks: (state) => {
     return state.tasks;
   },
-  profile: state => {
+  profile: (state) => {
     return state.profile;
   },
-  currentConversation: state => {
+  currentConversation: (state) => {
     return state.currentConversation;
-  }
+  },
 };
 
 export default {
@@ -106,5 +105,5 @@ export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 };
