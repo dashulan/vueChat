@@ -3,11 +3,10 @@
     <div class="WAL position-relative bg-grey-11" :style="style">
       <q-layout view="lHh Lpr lFf" class="WAL__layout shadow-3" container>
         <q-header>
-          <!-- <chat-header :user="currentConversation.title" /> -->
           <q-toolbar>
-            <span class="q-subtitle-1">{{ anotherName }}</span>
+            <q-btn icon="arrow_back_ios" flat dense @click="backHome" />
+            <span class="q-subtitle-1">{{ name }}</span>
             <q-space />
-            <input type="text" v-model="anotherName" />
           </q-toolbar>
         </q-header>
 
@@ -16,18 +15,7 @@
         </q-page-container>
 
         <q-footer>
-          <!-- <message-input :socket="stompClient" /> -->
           <q-toolbar class="bg-grey-3 text-black row">
-            <!-- <q-input
-      rounded
-      outlined
-      dense
-      class="col-grow q-mr-sm"
-      bg-color="white"
-      autogrow
-      v-model="message"
-      @keyup="handleKey"
-    /> -->
             <q-input
               rounded
               outlined
@@ -60,34 +48,33 @@ export default {
   data() {
     return {
       user: "大树懒",
-      anotherName: "",
       messageList: [],
       received_messages: [],
       send_message: null,
       connected: false,
       socket: null,
       stompClient: null,
-      message: ""
+      message: "",
     };
   },
+  props: ["name"],
   components: {
-    ChatWindow
+    ChatWindow,
     // ChatHeader
   },
   computed: {
     style() {
       return {
-        height: this.$q.screen.height + "px"
+        height: this.$q.screen.height + "px",
       };
     },
-    // messageList() {
-    //   return this.$store.getters["tasks/tasks"];
-    // }
-    // 等同于 简写方式
     ...mapGetters("tasks", ["currentConversation"]),
-    ...mapGetters("tasks", ["profile"])
+    ...mapGetters("tasks", ["profile"]),
   },
   methods: {
+    backHome: function () {
+      this.$router.go(-1);
+    },
     inputkeyDownHandle(even) {
       const keyName = even.key;
       if (keyName === "Enter") {
@@ -108,22 +95,18 @@ export default {
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect(
         {},
-        frame => {
+        (frame) => {
           console.log(this.profile.userName);
           this.connected = true;
-          console.log(frame);
           this.stompClient.subscribe(
             "/queue/chat/" + this.profile.userName,
-            tick => {
-              console.log(tick);
+            (tick) => {
               let msg = JSON.parse(tick.body);
               this.messageList.push(msg);
-              console.log(this.messageList);
-              console.log(this.profile.userId);
             }
           );
         },
-        error => {
+        (error) => {
           console.log(error);
           this.connected = false;
         }
@@ -143,28 +126,27 @@ export default {
           text: [this.message],
           userId: this.profile.userId,
           sent: sent,
-          conversationId: "1"
+          conversationId: "1",
         };
         this.stompClient.send(
-          "/app/chat/" + this.profile.userName + "/" + this.anotherName,
+          "/app/chat/" + this.profile.userName + "/" + this.name,
           JSON.stringify(msg),
           {}
         );
         this.message = "";
       }
     },
-    handleKey: function(e) {
+    handleKey: function (e) {
       if (e.key == "Enter") this.send();
-    }
+    },
   },
   mounted() {
     this.getConversation();
-    // console.log(this.currentConversation);
-    // let socket = new WebSocket("ws://localhost:8083/endpoint-websocket");
     this.connect();
   },
-  created() {}
-  // this.socket = new WebSocket("ws://localhost:8083/endpoint-websocket");
+  created() {
+    console.log("watsApp.vue create");
+  },
 };
 </script>
 

@@ -32,12 +32,12 @@ const state = {
     },
   },
   profile: {
-    userId: 2,
-    userName: "大树懒",
-    avatar: "img/city.jpg",
+    userId: 0,
+    userName: "",
+    avatar: "",
   },
   currentConversation: {
-    title: "",
+    name: "",
     conversationId: "",
   },
 };
@@ -73,7 +73,7 @@ const actions = {
   },
   setCurrentConverstation({ commit }, conversation) {
     let payload = {
-      title: conversation.title,
+      name: conversation.name,
       conversationId: conversation.id,
     };
     commit("setCurrentConverstation", payload);

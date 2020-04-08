@@ -73,6 +73,7 @@ export default {
   data() {
     return {
       user: {
+        id: "",
         name: "",
         password: "",
       },
@@ -86,6 +87,7 @@ export default {
   methods: {
     resetInfo: function () {
       this.user = {
+        id: "",
         name: "",
         password: "",
       };
@@ -99,15 +101,16 @@ export default {
     },
     doLogin: function () {
       axios.post("/api/auth/login", this.user).then((res) => {
-        if (res.data === "登录成功") {
+        res = res.data;
+        if (res.status === "OK") {
+          let userId = res.data;
           this.updateProfile({
+            userId: userId,
             userName: this.user.name,
           });
           this.$router.push("home");
-        } else if (res.data === "密码错误") {
-          this.pwdError = true;
-        } else if (res.data === "用户不存在") {
-          this.userError = true;
+        } else {
+          console.log(res);
         }
       });
     },
