@@ -90,7 +90,30 @@
             </q-tab-panel>
 
             <q-tab-panel name="mails">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              <q-virtual-scroll
+                style="max-height: calc(100vh - 100px);"
+                :items="friends"
+              >
+                <template v-slot="{ item, index }">
+                  <q-item :key="index" clickable @click="handleItemClick(item)">
+                    <q-item-section avatar>
+                      <q-avatar>
+                        <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+                      </q-avatar>
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label>{{ item.id }}</q-item-label>
+                      <q-item-label caption lines="2">
+                        {{ item.name }}
+                      </q-item-label>
+                    </q-item-section>
+                    <q-item-section side top>
+                      <q-item-label caption>{{ item.id }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-separator spaced inset="item" />
+                </template>
+              </q-virtual-scroll>
             </q-tab-panel>
 
             <q-tab-panel name="alarms"> </q-tab-panel>
@@ -107,7 +130,7 @@
             narrow-indicator
           >
             <q-tab name="chats" label="聊天" />
-            <q-tab name="mails" label="Mails" />
+            <q-tab name="mails" label="Mails" @click="getAllfriends" />
             <q-tab name="alarms" label="Alarms" />
           </q-tabs>
         </q-toolbar>
@@ -132,292 +155,300 @@ export default {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         ,
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         ,
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
+          time: "上午"
         },
         {
           label: "Option ",
           name: "用户",
           caption: "说点什么",
-          time: "上午",
-        },
+          time: "上午"
+        }
       ],
       addFriend: false,
       showInfo: false,
       searchMessage: "",
       name: "",
       userId: "",
+      friends: []
     };
   },
   computed: {
     ...mapGetters("tasks", ["profile"]),
     style() {
       return {
-        height: this.$q.screen.height + "px",
+        height: this.$q.screen.height + "px"
       };
-    },
+    }
   },
   methods: {
-    searchUser: function () {
+    getAllfriends: function() {
+      axios.get("/api/user/friends/" + this.profile.userName).then(res => {
+        console.log(res.data.data);
+        this.friends = res.data.data;
+      });
+    },
+    searchUser: function() {
       axios
         .get("/api/user/find/" + this.name)
-        .then((res) => {
+        .then(res => {
           if (res.data === "用户不存在") {
+            this.showInfo = false;
             this.searchMessage = res.data;
           } else {
             this.userId = res.data;
             this.showInfo = true;
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
     },
-    addUser: function () {
+    addUser: function() {
       axios
         .get("/api/user/add/" + this.profile.userId + "/" + this.userId)
-        .then((res) => {
+        .then(res => {
           console.log(res);
         });
     },
@@ -435,7 +466,7 @@ export default {
         .get("http://localhost:8083/conversation/id")
         // .get("/statics/conversations.json")
         .then(this.getAllConversationsSucc)
-        .catch((err) => console.log("失败"));
+        .catch(err => console.log("失败"));
       console.log("axois");
     },
     getAllConversationsSucc(res) {
@@ -450,11 +481,11 @@ export default {
     handleItemClick(item) {
       this.setCurrentConverstation({
         id: item.id,
-        name: item.name,
+        name: item.name
       });
       this.$router.push({ name: "chat", params: { name: item.name } });
     },
-    ...mapActions("tasks", ["setCurrentConverstation"]),
+    ...mapActions("tasks", ["setCurrentConverstation"])
   },
   components: {},
   mounted() {
@@ -466,7 +497,7 @@ export default {
   },
   beforeDestroy() {
     console.log("Home.vue beforeDestory");
-  },
+  }
 };
 </script>
 <style lang="sass">

@@ -39,7 +39,7 @@
           :dense="dense"
           maxlength="11"
           :rules="[
-            (val) => /^[1]([3-9=])[0-9]{9}/.test(val) || '请输入正确格式手机号',
+            val => /^[1]([3-9=])[0-9]{9}/.test(val) || '请输入正确格式手机号'
           ]"
           class="q-mt-none"
           debounce="500"
@@ -74,7 +74,7 @@
           dense
           :type="isPwd ? 'password' : 'text'"
           maxlength="18"
-          :rules="[(val) => val.length >= 6 || '密码太短了']"
+          :rules="[val => val.length >= 6 || '密码太短了']"
           class="q-mt-none"
           lazy-rules
         >
@@ -116,7 +116,7 @@ export default {
       user: {
         name: "",
         phone: "",
-        password: "",
+        password: ""
       },
       codeError: false,
       isPwd: true,
@@ -126,15 +126,15 @@ export default {
       disable: false,
       count: 60,
       phoneMessage: "",
-      phoneError: false,
+      phoneError: false
     };
   },
   methods: {
-    disableGetCode: function () {
+    disableGetCode: function() {
       this.disable = true;
       this.codeError = false;
       let self = this;
-      let interval = setInterval(function () {
+      let interval = setInterval(function() {
         self.count--;
         if (self.count == 0) {
           clearInterval(interval);
@@ -144,10 +144,10 @@ export default {
       }, 1000);
       return interval;
     },
-    getVerifyCode: function () {
+    getVerifyCode: function() {
       axios
         .get("/api/auth/code?phone=" + this.user.phone)
-        .then((res) => {
+        .then(res => {
           if (res.data === "手机号已被使用") {
             this.$refs.phoneInput.innerErrorMessage = res.data;
             this.$refs.phoneInput.innerError = true;
@@ -155,33 +155,33 @@ export default {
             this.disableGetCode();
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
     },
-    resetInfo: function () {
+    resetInfo: function() {
       this.user = {
         name: "",
         phone: "",
-        password: "",
+        password: ""
       };
       this.justify = "";
     },
-    closeDialog: function () {
+    closeDialog: function() {
       this.resetInfo();
       this.$emit("close");
     },
-    handleFormChange: function () {
+    handleFormChange: function() {
       this.$emit("change", "Login");
     },
-    suggestName: function (val) {
+    suggestName: function(val) {
       if (val.length <= 0) {
         return "用户名不能为空";
       }
       return new Promise((resolve, reject) => {
         axios
           .get("/api/auth/suggest?name=" + this.user.name)
-          .then((res) => {
+          .then(res => {
             if (res.data.status === "OK") {
               resolve(true);
             } else if (res.data.status === "REPEAT") {
@@ -190,20 +190,20 @@ export default {
               resolve(false);
             }
           })
-          .catch(function (error) {
+          .catch(function(error) {
             console.log(error);
           });
       });
     },
-    doRegister: function () {
+    doRegister: function() {
       axios
         .post("/api/auth/active", {
           phone: this.user.phone,
           code: this.justifyCode,
           name: this.user.name,
-          password: this.user.password,
+          password: this.user.password
         })
-        .then((res) => {
+        .then(res => {
           if (res.data === "注册成功") {
             this.handleFormChange();
           } else {
@@ -211,7 +211,7 @@ export default {
           }
         });
     },
-    ...mapActions("tasks", ["updateProfile"]),
+    ...mapActions("tasks", ["updateProfile"])
   },
   computed: {
     ifjustify() {
@@ -226,12 +226,12 @@ export default {
       } else {
         return this.count + "秒后重新发送";
       }
-    },
+    }
   },
 
   components: {
-    Head,
-  },
+    Head
+  }
 };
 </script>
 

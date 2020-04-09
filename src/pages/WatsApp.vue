@@ -50,29 +50,30 @@ export default {
       user: "大树懒",
       messageList: [],
       received_messages: [],
+
       send_message: null,
       connected: false,
       socket: null,
       stompClient: null,
-      message: "",
+      message: ""
     };
   },
   props: ["name"],
   components: {
-    ChatWindow,
+    ChatWindow
     // ChatHeader
   },
   computed: {
     style() {
       return {
-        height: this.$q.screen.height + "px",
+        height: this.$q.screen.height + "px"
       };
     },
     ...mapGetters("tasks", ["currentConversation"]),
-    ...mapGetters("tasks", ["profile"]),
+    ...mapGetters("tasks", ["profile"])
   },
   methods: {
-    backHome: function () {
+    backHome: function() {
       this.$router.go(-1);
     },
     inputkeyDownHandle(even) {
@@ -91,22 +92,19 @@ export default {
       this.messageList = res.data.messages;
     },
     connect() {
-      this.socket = new SockJS("http://192.168.1.108:8085/endpoint-websocket");
+      this.socket = new SockJS("http://192.168.1.108:8083/endpoint-websocket");
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect(
         {},
-        (frame) => {
+        frame => {
           console.log(this.profile.userName);
           this.connected = true;
-          this.stompClient.subscribe(
-            "/queue/chat/" + this.profile.userName,
-            (tick) => {
-              let msg = JSON.parse(tick.body);
-              this.messageList.push(msg);
-            }
-          );
+          this.stompClient.subscribe("/conversation/1", tick => {
+            let msg = JSON.parse(tick.body);
+            this.messageList.push(msg);
+          });
         },
-        (error) => {
+        error => {
           console.log(error);
           this.connected = false;
         }
@@ -126,19 +124,15 @@ export default {
           text: [this.message],
           userId: this.profile.userId,
           sent: sent,
-          conversationId: "1",
+          conversationId: "1"
         };
-        this.stompClient.send(
-          "/app/chat/" + this.profile.userName + "/" + this.name,
-          JSON.stringify(msg),
-          {}
-        );
+        this.stompClient.send("/app/conversation/1", JSON.stringify(msg), {});
         this.message = "";
       }
     },
-    handleKey: function (e) {
+    handleKey: function(e) {
       if (e.key == "Enter") this.send();
-    },
+    }
   },
   mounted() {
     this.getConversation();
@@ -146,7 +140,7 @@ export default {
   },
   created() {
     console.log("watsApp.vue create");
-  },
+  }
 };
 </script>
 
