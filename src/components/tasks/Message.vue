@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <q-item v-touch-hold:1000.mouse="fireSomething">
+    <q-item>
       <q-item-section>
         <q-chat-message :sent="show" :stamp="stamp">
           {{ item.text }}

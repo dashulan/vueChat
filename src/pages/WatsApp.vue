@@ -1,42 +1,40 @@
 <template>
-  <transition appear enter-active-class="animated fadeIn">
-    <div class="WAL position-relative bg-grey-11" :style="style">
-      <q-layout view="lHh Lpr lFf" class="WAL__layout shadow-3" container>
-        <q-header>
-          <q-toolbar>
-            <q-btn icon="arrow_back_ios" flat dense @click="backHome" />
-            <span class="q-subtitle-1">哈哈</span>
-            <q-space />
-          </q-toolbar>
-        </q-header>
+  <div class="WAL position-relative bg-grey-11" :style="style">
+    <q-layout view="lHh lpr lFf" class="WAL__layout shadow-3" container>
+      <q-header>
+        <q-toolbar>
+          <q-btn icon="arrow_back_ios" flat dense @click="backHome" />
+          <span class="q-subtitle-1">哈哈</span>
+          <q-space />
+        </q-toolbar>
+      </q-header>
 
-        <q-page-container class="bg-grey-11">
+      <q-page-container class="bg-grey-11">
+        <q-page>
           <chat-window :messageList="messageList" />
-        </q-page-container>
+        </q-page>
+      </q-page-container>
 
-        <q-footer>
-          <q-toolbar class="bg-grey-3 text-black row">
-            <q-input
-              rounded
-              outlined
-              dense
-              class="col-grow"
-              autogrow
-              v-model="message"
-              @keyup.prevent="handleKey"
-            />
-            <q-btn round flat icon="send" @click="send" />
-          </q-toolbar>
-        </q-footer>
-      </q-layout>
-    </div>
-  </transition>
+      <q-footer>
+        <q-toolbar class="bg-grey-3 text-black row">
+          <q-input
+            rounded
+            outlined
+            dense
+            class="col-grow"
+            autogrow
+            v-model="message"
+            @keyup.prevent="handleKey"
+          />
+          <q-btn round flat icon="send" @click="send" />
+        </q-toolbar>
+      </q-footer>
+    </q-layout>
+  </div>
 </template>
 
 <script>
-import MessageInput from "../components/tasks/Input";
 import ChatWindow from "../components/tasks/Chat";
-import ChatHeader from "../components/tasks/ChatHeader";
 import { date } from "quasar";
 import { mapGetters } from "vuex";
 import axios from "axios";
@@ -47,10 +45,7 @@ export default {
   name: "WhatsappLayout",
   data() {
     return {
-      user: "大树懒",
       messageList: [],
-      received_messages: [],
-      send_message: null,
       connected: false,
       socket: null,
       stompClient: null,
@@ -59,7 +54,6 @@ export default {
   },
   components: {
     ChatWindow
-    // ChatHeader
   },
   computed: {
     style() {
@@ -74,20 +68,10 @@ export default {
     backHome: function() {
       this.$router.go(-1);
     },
-    inputkeyDownHandle(even) {
-      const keyName = even.key;
-      if (keyName === "Enter") {
-        this.sendMessage();
-      }
-    },
     getMessageOfConversation() {
       axios
         .get("/api/conversation/" + this.currentConversation.cid)
         .then(this.getConversationSucc);
-    },
-    getConversation() {
-      let c_id = this.currentConversation.conversationId;
-      axios.get("/statics/conversation.json").then(this.getConversationSucc);
     },
     getConversationSucc(res) {
       console.log(res.data);
@@ -140,6 +124,7 @@ export default {
         this.message = "";
       }
     },
+
     handleKey: function(e) {
       if (e.key == "Enter") this.send();
     }
@@ -171,11 +156,6 @@ export default {
     width: 90%
     max-width: 950px
     border-radius: 5px
-  &__field.q-field--outlined .q-field__control:before
-    border: none
-  .q-drawer--standard
-    .WAL__drawer-close
-      display: none
 @media (max-width: 850px)
   .WAL
     padding: 0
@@ -186,9 +166,4 @@ export default {
   .WAL
     &__drawer-open
       display: none
-.conversation__summary
-  margin-top: 4px
-.conversation__more
-  margin-top: 0!important
-  font-size: 1.4rem
 </style>
