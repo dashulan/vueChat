@@ -425,7 +425,6 @@ export default {
   methods: {
     getAllfriends: function() {
       axios.get("/api/user/friends/" + this.profile.userName).then(res => {
-        console.log(res.data.data);
         this.friends = res.data.data;
       });
     },
@@ -453,11 +452,6 @@ export default {
         });
     },
     myTweak(offset) {
-      // "offset" is a Number (pixels) that refers to the total
-      // height of header + footer that occupies on screen,
-      // based on the QLayout "view" prop configuration
-
-      // this is actually what the default style-fn does in Quasar
       console.log(offset);
       return { minHeight: offset ? `calc(100vh - ${offset}px)` : "100vh" };
     },
@@ -470,34 +464,30 @@ export default {
       console.log("axois");
     },
     getAllConversationsSucc(res) {
-      // res = res.data;
-      // console.log("sss");
-      // if (res.ret && res.data) {
-      //   const data = res.data;
-      //   this.conversations = data.conversations;
-      // }
       console.log(res);
     },
     handleItemClick(item) {
-      this.setCurrentConverstation({
-        id: item.id,
-        name: item.name
-      });
-      this.$router.push({ name: "chat", params: { name: item.name } });
+      this.establishConversation(item);
+      this.$router.push({ name: "chat" });
+    },
+    establishConversation(item) {
+      axios
+        .get(`/api/conversation/establish/${this.profile.userId}/${item.id}`)
+        .then(res => {
+          console.log(res);
+          res = res.data;
+          let cid = res.data.conversationId;
+          this.setCurrentConverstation({
+            id: cid
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     ...mapActions("tasks", ["setCurrentConverstation"])
   },
-  components: {},
-  mounted() {
-    // this.getAllConversations();
-    console.log("Home.vue mounted");
-  },
-  created() {
-    console.log("Home.vue create");
-  },
-  beforeDestroy() {
-    console.log("Home.vue beforeDestory");
-  }
+  components: {}
 };
 </script>
 <style lang="sass">

@@ -5,7 +5,7 @@
         <q-header>
           <q-toolbar>
             <q-btn icon="arrow_back_ios" flat dense @click="backHome" />
-            <span class="q-subtitle-1">{{ name }}</span>
+            <span class="q-subtitle-1">哈哈</span>
             <q-space />
           </q-toolbar>
         </q-header>
@@ -50,7 +50,6 @@ export default {
       user: "大树懒",
       messageList: [],
       received_messages: [],
-
       send_message: null,
       connected: false,
       socket: null,
@@ -58,7 +57,6 @@ export default {
       message: ""
     };
   },
-  props: ["name"],
   components: {
     ChatWindow
     // ChatHeader
@@ -82,14 +80,19 @@ export default {
         this.sendMessage();
       }
     },
-    sendMessage() {},
+    getMessageOfConversation() {
+      axios
+        .get("/api/conversation/" + this.currentConversation.cid)
+        .then(this.getConversationSucc);
+    },
     getConversation() {
       let c_id = this.currentConversation.conversationId;
       axios.get("/statics/conversation.json").then(this.getConversationSucc);
     },
     getConversationSucc(res) {
+      console.log(res.data);
       res = res.data;
-      this.messageList = res.data.messages;
+      this.messageList = res.data;
     },
     connect() {
       this.socket = new SockJS("http://192.168.1.108:8083/endpoint-websocket");
@@ -99,10 +102,13 @@ export default {
         frame => {
           console.log(this.profile.userName);
           this.connected = true;
-          this.stompClient.subscribe("/conversation/1", tick => {
-            let msg = JSON.parse(tick.body);
-            this.messageList.push(msg);
-          });
+          this.stompClient.subscribe(
+            `/conversation/${this.currentConversation.cid}`,
+            tick => {
+              let msg = JSON.parse(tick.body);
+              this.messageList.push(msg);
+            }
+          );
         },
         error => {
           console.log(error);
@@ -110,23 +116,27 @@ export default {
         }
       );
     },
+
     send() {
-      console.log(this.profile.userName);
-      console.log("Send message:" + this.message);
       if (
         this.stompClient &&
         this.stompClient.connected &&
-        this.message !== ""
+        this.message !== "" &&
+        this.message !== "\n"
       ) {
         let current = Date.now();
         let sent = date.formatDate(current, "YYYY-MM-DD HH:mm:ss");
         const msg = {
-          text: [this.message],
+          text: this.message,
           userId: this.profile.userId,
           sent: sent,
-          conversationId: "1"
+          conversationId: this.currentConversation.cid
         };
-        this.stompClient.send("/app/conversation/1", JSON.stringify(msg), {});
+        this.stompClient.send(
+          `/app/conversation/${this.currentConversation.cid}`,
+          JSON.stringify(msg),
+          {}
+        );
         this.message = "";
       }
     },
@@ -134,12 +144,9 @@ export default {
       if (e.key == "Enter") this.send();
     }
   },
-  mounted() {
-    this.getConversation();
-    this.connect();
-  },
   created() {
-    console.log("watsApp.vue create");
+    this.getMessageOfConversation();
+    this.connect();
   }
 };
 </script>

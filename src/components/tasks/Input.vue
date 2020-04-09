@@ -79,7 +79,8 @@ export default {
     send() {
       console.log("Send message:" + this.message);
       const msg = { name: this.message };
-      this.stompClient.send("/app/hello", JSON.stringify(msg), {});
+      console.log("msg");
+      // this.stompClient.send("/app/hello", JSON.stringify(msg), {});
     }
   },
   components: {}

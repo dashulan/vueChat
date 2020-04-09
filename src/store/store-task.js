@@ -38,7 +38,7 @@ const state = {
   },
   currentConversation: {
     name: "",
-    conversationId: "",
+    cid: "",
   },
 };
 
@@ -74,7 +74,7 @@ const actions = {
   setCurrentConverstation({ commit }, conversation) {
     let payload = {
       name: conversation.name,
-      conversationId: conversation.id,
+      cid: conversation.id,
     };
     commit("setCurrentConverstation", payload);
   },

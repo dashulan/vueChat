@@ -2,7 +2,9 @@
   <div class="container">
     <q-item v-touch-hold:1000.mouse="fireSomething">
       <q-item-section>
-        <q-chat-message :text="item.text" :sent="show" :stamp="stamp" />
+        <q-chat-message :sent="show" :stamp="stamp">
+          {{ item.text }}
+        </q-chat-message>
       </q-item-section>
     </q-item>
   </div>

@@ -1,8 +1,4 @@
 <template>
-  <!-- <q-virtual-scroll ref="virtualListRef" component="q-list">
-    <message v-for="(item, key) in tasks" :key="key" :id="key" :item="item">
-    </message>
-  </q-virtual-scroll> -->
   <q-list ref="MessageList" class="scroll overflow-hidden">
     <message v-for="(item, index) in messageList" :key="index" :item="item" />
   </q-list>
