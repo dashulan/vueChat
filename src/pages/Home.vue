@@ -436,7 +436,7 @@ export default {
             this.showInfo = false;
             this.searchMessage = res.data;
           } else {
-            this.userId = res.data;
+            this.userId = res.data.data;
             this.showInfo = true;
           }
         })
@@ -446,7 +446,7 @@ export default {
     },
     addUser: function() {
       axios
-        .get("/api/user/add/" + this.profile.userId + "/" + this.userId)
+        .get(`/api/user/add/${this.profile.userId}/${this.userId}`)
         .then(res => {
           console.log(res);
         });
@@ -466,24 +466,34 @@ export default {
     getAllConversationsSucc(res) {
       console.log(res);
     },
-    handleItemClick(item) {
-      this.establishConversation(item);
+    async handleItemClick(item) {
+      await this.establishConversation(item);
       this.$router.push({ name: "chat" });
     },
-    establishConversation(item) {
-      axios
-        .get(`/api/conversation/establish/${this.profile.userId}/${item.id}`)
-        .then(res => {
-          console.log(res);
-          res = res.data;
-          let cid = res.data.conversationId;
-          this.setCurrentConverstation({
-            id: cid
-          });
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    async establishConversation(item) {
+      let res = await axios.get(
+        `/api/conversation/establish/${this.profile.userId}/${item.id}`
+      );
+      res = res.data;
+      let cid = res.data[0];
+      console.log(cid);
+      this.setCurrentConverstation({
+        cid: cid
+      });
+
+      // axios
+      //   .get(`/api/conversation/establish/${this.profile.userId}/${item.id}`)
+      //   .then(res => {
+      //     console.log(res);
+      //     res = res.data;
+      //     let cid = res.data.conversationId;
+      //     this.setCurrentConverstation({
+      //       id: cid
+      //     });
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //   });
     },
     ...mapActions("tasks", ["setCurrentConverstation"])
   },

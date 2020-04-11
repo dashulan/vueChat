@@ -148,6 +148,7 @@ export default {
       axios
         .get("/api/auth/code?phone=" + this.user.phone)
         .then(res => {
+          console.log(res.data);
           if (res.data === "手机号已被使用") {
             this.$refs.phoneInput.innerErrorMessage = res.data;
             this.$refs.phoneInput.innerError = true;
@@ -182,12 +183,11 @@ export default {
         axios
           .get("/api/auth/suggest?name=" + this.user.name)
           .then(res => {
-            if (res.data.status === "OK") {
+            console.log(res.data);
+            if (res.data === "ok") {
               resolve(true);
-            } else if (res.data.status === "REPEAT") {
-              resolve("用户名已被注册");
             } else {
-              resolve(false);
+              resolve(res.data);
             }
           })
           .catch(function(error) {
@@ -197,9 +197,8 @@ export default {
     },
     doRegister: function() {
       axios
-        .post("/api/auth/active", {
+        .post("/api/auth/active?code=" + this.justifyCode, {
           phone: this.user.phone,
-          code: this.justifyCode,
           name: this.user.name,
           password: this.user.password
         })

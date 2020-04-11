@@ -10,7 +10,7 @@ const state = {
       sent: true,
       sentTimeStamp: "2020-03-26 23:54:58",
       sentDate: "",
-      sentTime: "",
+      sentTime: ""
     },
     ID2: {
       avatar: "https://cdn.quasar.dev/team/dan_popescu.jpg",
@@ -19,7 +19,7 @@ const state = {
       sent: true,
       sentTimeStamp: "2020-03-26 23:54:58",
       sentDate: "",
-      sentTime: "",
+      sentTime: ""
     },
     ID3: {
       avatar: "../statics/city.jpg",
@@ -28,18 +28,18 @@ const state = {
       sent: true,
       sentTimeStamp: "2020-03-30 15:35:38",
       sentDate: "",
-      sentTime: "",
-    },
+      sentTime: ""
+    }
   },
   profile: {
     userId: 0,
     userName: "",
-    avatar: "",
+    avatar: ""
   },
   currentConversation: {
     name: "",
-    cid: "",
-  },
+    cid: ""
+  }
 };
 
 const mutations = {
@@ -56,7 +56,7 @@ const mutations = {
   },
   updateProfile(state, payload) {
     Object.assign(state.profile, payload);
-  },
+  }
 };
 
 const actions = {
@@ -67,14 +67,14 @@ const actions = {
     let messagId = uid();
     let payload = {
       id: messagId,
-      message: message,
+      message: message
     };
     commit("addMessage", payload);
   },
   setCurrentConverstation({ commit }, conversation) {
     let payload = {
       name: conversation.name,
-      cid: conversation.id,
+      cid: conversation.cid
     };
     commit("setCurrentConverstation", payload);
   },
@@ -82,22 +82,22 @@ const actions = {
     let payload = {
       userId: profile.userId,
       userName: profile.userName,
-      avatar: profile.avatar,
+      avatar: profile.avatar
     };
     commit("updateProfile", payload);
-  },
+  }
 };
 
 const getters = {
-  tasks: (state) => {
+  tasks: state => {
     return state.tasks;
   },
-  profile: (state) => {
+  profile: state => {
     return state.profile;
   },
-  currentConversation: (state) => {
+  currentConversation: state => {
     return state.currentConversation;
-  },
+  }
 };
 
 export default {
@@ -105,5 +105,5 @@ export default {
   state,
   mutations,
   actions,
-  getters,
+  getters
 };

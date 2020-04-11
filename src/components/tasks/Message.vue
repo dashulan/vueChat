@@ -34,24 +34,26 @@ export default {
       let cs = date.formatDate(current, "X");
 
       let sent = date.extractDate(this.item.sent, "YYYY-MM-DD HH:mm:ss");
+      console.log(sent);
       let sent2 = date.formatDate(sent, "X");
 
       let min = Math.round((cs - sent2) / 60);
+      if (min == 0) return stamp;
       if (min > 60) {
         let hour = Math.round(min / 60);
-        stamp = hour + " hour";
+        stamp = hour + " 小时";
         if (hour > 24) {
           let day = Math.round(hour / 24);
-          stamp = day + " day";
+          stamp = day + " 天";
         }
-        return stamp + " ago";
+        return stamp + " 前";
       } else {
-        return stamp;
+        return min + " 分钟前";
       }
     },
     ...mapGetters("tasks", ["profile"]),
     show() {
-      return this.item.userId == this.profile.userId;
+      return this.item.uid == this.profile.userId;
     }
   }
 };

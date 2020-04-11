@@ -69,6 +69,7 @@ export default {
       this.$router.go(-1);
     },
     getMessageOfConversation() {
+      console.log(this.currentConversation.cid);
       axios
         .get("/api/conversation/" + this.currentConversation.cid)
         .then(this.getConversationSucc);
@@ -89,7 +90,9 @@ export default {
           this.stompClient.subscribe(
             `/conversation/${this.currentConversation.cid}`,
             tick => {
+              console.log(tick);
               let msg = JSON.parse(tick.body);
+              console.log(msg);
               this.messageList.push(msg);
             }
           );
@@ -112,7 +115,7 @@ export default {
         let sent = date.formatDate(current, "YYYY-MM-DD HH:mm:ss");
         const msg = {
           text: this.message,
-          userId: this.profile.userId,
+          uid: this.profile.userId,
           sent: sent,
           conversationId: this.currentConversation.cid
         };
